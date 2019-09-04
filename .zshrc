@@ -106,7 +106,7 @@ PROMPT="λ %~${vcs_info_msg_0_} %# "
 alias vim=nvim
 alias wakevaio="wakeonlan 00:1D:BA:20:5D:B1"   
 
-export PATH="$HOME/.cargo/bin:$PATH:$HOME/Library/Android/sdk/tools:$HOME/Library/Android/sdk/platform-tools:$HOME/Library/Android/sdk/tools/bin"
+export PATH="/usr/local/opt/postgresql@9.6/bin:$HOME/.cargo/bin:$PATH:$HOME/Library/Android/sdk/tools:$HOME/Library/Android/sdk/platform-tools:$HOME/Library/Android/sdk/tools/bin"
 export SHELL="/bin/zsh"
 
 zstyle ':completion:*' special-dirs true
