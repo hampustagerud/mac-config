@@ -64,6 +64,8 @@ Plug 'scrooloose/nerdtree'
 let g:NERDTreeWinSize=60
 let g:NERDTreeQuitOnOpen=1
 
+Plug 'vim-scripts/Rename2'
+
 " Language support
 "" TeX
 Plug 'lervag/vimtex'
@@ -221,7 +223,10 @@ vmap s :sort<CR>
 vmap sy "*y
 
 " Reload init.vim
-nmap <C-i> :source $MYVIMRC<CR>
+nmap <C-l> :source $MYVIMRC<CR>
+
+" Rename file
+nmap <C-r> :call feedkeys(":Rename " . expand('%@'))<CR>
 
 " Plugin keys
 nmap <space> :CtrlPBuffer<CR>
@@ -295,3 +300,8 @@ function! ToggleGoyo()
     endif
 endfunction
 
+" Set filetype for tsx
+augroup SyntaxSettings
+    autocmd!
+    autocmd BufNewFile,BufRead *.tsx set filetype=typescript.jsx
+augroup END
