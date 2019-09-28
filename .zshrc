@@ -135,3 +135,5 @@ export PATH="/Users/Hampus/.cabal/bin:$PATH"
 
 # added by travis gem
 [ -f /Users/Hampus/.travis/travis.sh ] && source /Users/Hampus/.travis/travis.sh
+
+export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
