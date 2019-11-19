@@ -272,6 +272,9 @@ imap jj <C-c>
 " Terminal
 tnoremap <Esc> <C-\><C-n>
 
+" Command line
+cmap <A-BS> <C-W>
+
 "" Auto commands
 " Restore position in closed buffers
 autocmd BufReadPost *
