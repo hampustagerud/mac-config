@@ -75,16 +75,61 @@ else
 fi
 
 setopt prompt_subst
-autoload -Uz vcs_info
-zstyle ':vcs_info:*' enable git
-zstyle ':vcs_info:git*' formats ":%b"
-zstyle ':vcs_info:*' check-for-changes true
-precmd() 
+
+prompt_context()
 {
-    vcs_info
+	PENGUIN_COLOR=green
+	if [ ${RETVAL} -gt 0 ]; then
+		PENGUIN_COLOR=red
+	fi
+
+	prompt_segment ${PENGUIN_COLOR} default "🐧"
 }
 
-PROMPT="λ %~${vcs_info_msg_0_} %# "
+prompt_dir()
+{
+	DIR_NAME=$(basename $(pwd))
+	prompt_segment blue $CURRENT_FG ${DIR_NAME}
+	# prompt_segment blue $CURRENT_FG "%~"
+}
+
+prompt_git()
+{
+	ls .git > /dev/null 2>&1
+	HAS_GIT=${?}
+
+	if [ "$(pwd)" = "${HOME}" ] || [ ${HAS_GIT} -ne 0 ]; then
+		return
+	fi
+
+	GIT_ROOT=$(git rev-parse --git-dir 2> /dev/null)
+
+	if [ "${GIT_ROOT}" = "${HOME}/.git" ]; then
+		return
+	fi
+
+	BRANCH_ICON=$'\uf1d3'
+	DIRTY=$(parse_git_dirty)
+
+	if [ -n ${DIRTY} ]; then
+		BACKGROUND=green
+	else
+		BACKGROUND=yellow
+	fi
+
+	STATS=$(git diff origin/master --shortstat 2> /dev/null  | awk '{ print "(" $1 ")" " " $4 "+" " " $6 "-" }' || echo '')
+
+	prompt_segment ${BACKGROUND} ${CURRENT_FG} "${BRANCH_ICON} ${STATS}"
+}
+
+build_prompt()
+{
+	RETVAL=$?
+	prompt_context
+	prompt_dir
+	prompt_git
+	prompt_end
+}
 
 alias vim=nvim
 
