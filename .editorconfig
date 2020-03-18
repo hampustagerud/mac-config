@@ -1,0 +1,18 @@
+# top-most EditorConfig file
+root = true
+
+[*]
+indent_size=8
+indent_style=tab
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[*.{sh,vim}]
+indent_size = 4
+indent_style=tab
+
+[*.{js,jsx,ts,tsx,json,css,scss}]
+indent_size = 2
+indent_style = space
