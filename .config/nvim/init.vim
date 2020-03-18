@@ -46,10 +46,12 @@ let g:ale_linters = {
 \}
 
 Plug 'Valloric/YouCompleteMe'
-let g:ycm_min_num_of_chars_for_completion = 3
 let g:ycm_autoclose_preview_window_after_completion = 1
 let g:ycm_key_list_select_completion=[]
 let g:ycm_key_list_previous_completion=[]
+let g:ycm_min_num_of_chars_for_completion = 4
+let g:ycm_extra_conf_globlist = ['~/Developer/*','!~/*']
+let g:ycm_disable_for_files_larger_than_kb = 4096
 
 " Plug 'mtth/scratch.vim'
 let g:scratch_autohide=1
@@ -245,7 +247,7 @@ nmap <C-l> :source $MYVIMRC<CR>
 " Plugin keys
 nmap <space> :CtrlPBuffer<CR>
 nmap t :TagbarToggle<CR>
-nmap <leader><space> :NERDTreeToggle<CR>
+nmap <leader><space> :call ToggleNERDTree()<CR>
 
 " Splits
 set splitbelow
@@ -273,8 +275,14 @@ nmap QQ :BD<CR>
 tmap QQ :bd!<CR>
 
 
-" YouCompleteMe
-nmap gd :YcmCompleter GoToDefinition<CR>
+" YouCompleteMe / ALE
+nmap <leader>d :YcmShowDetailedDiagnostic<CR>
+nmap D :ALEDetail<CR>
+nmap <leader>F :YcmCompleter FixIt<CR>
+nmap <leader>f :ALEFix<CR>
+
+nmap ° :YcmCompleter GetType<CR>
+nmap § :YcmCompleter GoToDeclaration<CR>
 
 " Remap ESC in input mode
 imap jj <C-c>
@@ -302,4 +310,10 @@ function! ToggleColorMode()
 	endif
 endfunction
 
+function! ToggleNERDTree()
+	if exists("g:NERDTree") && g:NERDTree.IsOpen()
+		NERDTreeClose
+	else
+		NERDTreeFind %
+	endif
 endfunction
