@@ -99,6 +99,11 @@ let g:alchemist_mappings_disable = 1
 Plug 'junegunn/vim-peekaboo'
 Plug 'airblade/vim-gitgutter'
 let g:gitgutter_map_keys=0
+Plug 'APZelos/blamer.nvim'
+let g:blamer_enabled = 1
+let g:blamer_delay = 700
+let g:blamer_quiet = 1
+let g:blamer_show_in_visual_modes = 0
 
 Plug 'majutsushi/tagbar'
 let g:tagbar_autoclose = 1
