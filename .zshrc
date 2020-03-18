@@ -124,7 +124,7 @@ prompt_git()
 
 prompt_project()
 {
-	if [ -f .zshrc ] && [ "${PWD}" != ~ ]; then
+	if ([ -f .zshrc ] && [ "${PWD}" != ~ ]) || [[ ${CUSTOM_COMMANDS} -eq 1 ]]; then
 		prompt_segment yellow ${CURRENT_FG} "λ"
 	fi
 }
@@ -181,8 +181,21 @@ function dir()
 
 function changed_pwd
 {
-	if [ ${ZSH_SUBSHELL} -eq 0 ] && [ -f .zshrc ] && [ ${PWD} != ~ ]; then
-		source .zshrc
+	# Only if not in subshell
+	if [ ${ZSH_SUBSHELL} -eq 0 ]; then
+		# Source local .zshrc files
+		if [ -f .zshrc ] && [ ${PWD} != ~ ]; then
+			source .zshrc
+		fi
+
+		# Source CMake command if in git root that contains CMake file
+		if [ -d .git ] && [ -f CMakeLists.txt ]; then
+			CUSTOM_COMMANDS=1
+			source ~/.zshrc_cmake
+		else
+			CUSTOM_COMMANDS=0
+			unset -f -m 'project'
+		fi
 	fi
 }
 
