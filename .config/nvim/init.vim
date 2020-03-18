@@ -1,8 +1,8 @@
 "" Auto install vim-plug
 if empty(glob("$VIM/autoload/plug.vim"))
-    silent !curl -sfLo $VIM/autoload/plug.vim --create-dirs
-        \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-    autocmd VimEnter * PlugInstall
+	silent !curl -sfLo $VIM/autoload/plug.vim --create-dirs
+		\ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+	autocmd VimEnter * PlugInstall
 endif
 
 "" Plugins
@@ -51,7 +51,7 @@ let g:ycm_autoclose_preview_window_after_completion = 1
 let g:ycm_key_list_select_completion=[]
 let g:ycm_key_list_previous_completion=[]
 
-Plug 'mtth/scratch.vim'
+" Plug 'mtth/scratch.vim'
 let g:scratch_autohide=1
 let g:scratch_insert_autohide=0
 
@@ -59,13 +59,6 @@ Plug 'editorconfig/editorconfig-vim'
 Plug 'easymotion/vim-easymotion'
 let g:EasyMotion_smartcase = 1
 let g:EasyMotion_do_mapping = 0
-
-Plug 'terryma/vim-multiple-cursors'
-let g:multi_cursor_use_default_mapping=0
-let g:multi_cursor_start_word_key = '<C-n>'
-let g:multi_cursor_next_key = '<C-n>'
-let g:multi_cursor_skip_key = '<C-x>'
-let g:multi_cursor_quit_key = '<Esc>'
 
 Plug 'cohama/lexima.vim'
 
@@ -75,8 +68,6 @@ Plug 'ctrlpvim/ctrlp.vim'
 Plug 'scrooloose/nerdtree'
 let g:NERDTreeWinSize=60
 let g:NERDTreeQuitOnOpen=1
-
-Plug 'vim-scripts/Rename2'
 
 " Language support
 "" TeX
@@ -92,6 +83,7 @@ Plug 'pangloss/vim-javascript'
 let g:javascript_plugin_flow = 1
 let g:javascript_plugin_jsdoc = 1
 
+"" JSON
 Plug 'elzr/vim-json'
 let g:vim_json_syntax_conceal = 0
 
@@ -104,14 +96,10 @@ Plug 'slashmili/alchemist.vim'
 let g:alchemist_mappings_disable = 1
 
 " UI
-Plug 'junegunn/vim-slash'
-Plug 'junegunn/goyo.vim'
 Plug 'junegunn/vim-peekaboo'
-Plug 'junegunn/limelight.vim'
 Plug 'airblade/vim-gitgutter'
 let g:gitgutter_map_keys=0
 
-Plug 'mhinz/vim-startify'
 Plug 'majutsushi/tagbar'
 let g:tagbar_autoclose = 1
 let g:tagbar_type_typescript = {
@@ -134,10 +122,7 @@ let g:tagbar_type_typescript = {
 \ }
 Plug 'rakr/vim-one'
 Plug 'vim-airline/vim-airline'
-Plug 'ernstwi/vim-sticky'
-let g:sticky_all = ['background']
 
-Plug 'Yilin-Yang/vim-markbar'
 Plug 'ryanoasis/vim-devicons'
 let g:DevIconsEnableFoldersOpenClose = 1
 let g:WebDevIconsUnicodeDecorateFolderNodes = 1
@@ -160,12 +145,12 @@ let g:airline_powerline_fonts = 1
 
 " Colors
 if (empty($TMUX))
-  if (has("nvim"))
-    let $NVIM_TUI_ENABLE_TRUE_COLOR=1
-  endif
-  if (has("termguicolors"))
-    set termguicolors
-  endif
+	if (has("nvim"))
+		let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+	endif
+	if (has("termguicolors"))
+		set termguicolors
+	endif
 endif
 
 set background=dark
@@ -205,11 +190,6 @@ filetype plugin on
 nmap <CR> o
 nmap <leader><CR> $a,<CR>
 
-" Reformat code
-nmap <leader>f :Neoformat<CR>
-nmap <leader>F gg=Gg;
-vmap <leader>f :Neoformat<CR>
-vmap <leader>F gg=Gg;
 " Clean whitespace
 nmap <leader>cw :%s/\s\+$//e<cr>``
 
@@ -257,9 +237,6 @@ vmap sy "*y
 " Reload init.vim
 nmap <C-l> :source $MYVIMRC<CR>
 
-" Rename file
-nmap <C-r> :call feedkeys(":Rename " . expand('%@'))<CR>
-
 " Plugin keys
 nmap <space> :CtrlPBuffer<CR>
 nmap t :TagbarToggle<CR>
@@ -290,10 +267,6 @@ nmap <BS> :Scratch<CR>
 nmap QQ :BD<CR>
 tmap QQ :bd!<CR>
 
-" Toggle light/dark colorscheme
-nmap § :call ToggleColorMode()<CR>
-" Toggle Goyo
-nmap §§ :call ToggleGoyo()<CR>
 
 " YouCompleteMe
 nmap gd :YcmCompleter GoToDefinition<CR>
@@ -310,33 +283,18 @@ cmap <A-BS> <C-W>
 "" Auto commands
 " Restore position in closed buffers
 autocmd BufReadPost *
-            \ if line("'\"") > 0 && line("'\"") <= line("$")    |
-            \   exe "normal! g`\"" 			        |
-            \ endif
+	\ if line("'\"") > 0 && line("'\"") <= line("$")	|
+	\   exe "normal! g`\""					|
+	\ endif
 set viminfo^=%
 
 "" Functions
 function! ToggleColorMode()
-    if (&background == "light")
-        set background=dark
-    else
-        set background=light
-    endif
+	if (&background == "light")
+		set background=dark
+	else
+		set background=light
+	endif
 endfunction
 
-let s:goyo_enabled = 0
-function! ToggleGoyo()
-    if s:goyo_enabled == 0
-        let s:goyo_enabled = 1
-        Goyo 81x100%
-    else
-        let s:goyo_enabled = 0
-        Goyo!
-    endif
 endfunction
-
-" Set filetype for tsx
-augroup SyntaxSettings
-    autocmd!
-    autocmd BufNewFile,BufRead *.tsx set filetype=typescript.jsx
-augroup END
