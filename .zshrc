@@ -122,12 +122,20 @@ prompt_git()
 	prompt_segment ${BACKGROUND} ${CURRENT_FG} "${BRANCH_ICON} ${STATS}"
 }
 
+prompt_project()
+{
+	if [ -f .zshrc ] && [ "${PWD}" != ~ ]; then
+		prompt_segment yellow ${CURRENT_FG} "λ"
+	fi
+}
+
 build_prompt()
 {
 	RETVAL=$?
 	prompt_context
 	prompt_dir
 	prompt_git
+	prompt_project
 	prompt_end
 }
 
@@ -170,3 +178,15 @@ function dir()
 {
 	echo ${PWD}
 }
+
+function changed_pwd
+{
+	if [ ${ZSH_SUBSHELL} -eq 0 ] && [ -f .zshrc ] && [ ${PWD} != ~ ]; then
+		source .zshrc
+	fi
+}
+
+# Hook into changing working directory
+if [[ ! "${chpwd_functions[@]}" =~ "changed_pwd" ]]; then
+	chpwd_functions=(${chpwd_functions[@]} "changed_pwd")
+fi
