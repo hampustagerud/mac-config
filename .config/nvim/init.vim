@@ -22,14 +22,27 @@ Plug 'scrooloose/nerdcommenter'
 let g:NERDSpaceDelims = 1
 let g:NERDCustomDelimiters = { 'js': { 'left': '/* ','right': ' */' } }
 
-Plug 'sbdchd/neoformat'
-let g:neoformat_enabled_javascript = ['prettier']
 Plug 'w0rp/ale'
 let g:ale_linters_explicit = 1
 let g:ale_sign_column_always = 1
-let b:ale_linters = {
-\  'javascript': ['eslint', 'prettier'],
-\  'typescript': ['eslint']
+let g:ale_completion_enabled = 1
+let g:ale_completion_tsserver_autoimport = 1
+let g:ale_completion_enabled = 0
+let g:ale_fix_on_save = 1
+let g:ale_lint_on_text_changed = 'always'
+let g:ale_lint_on_enter = 1
+let g:ale_lint_delay = 300
+let g:ale_fixers = {
+\  'javascript': ['prettier'],
+\  'typescript': ['prettier'],
+\  'typescriptreact': ['prettier'],
+\  'scss': ['prettier'],
+\}
+let g:ale_linters = {
+\  'javascript': ['eslint'],
+\  'typescript': ['eslint', 'tsserver'],
+\  'typescriptreact': ['eslint', 'tsserver'],
+\  'scss': ['stylelint']
 \}
 
 Plug 'Valloric/YouCompleteMe'
@@ -38,7 +51,6 @@ let g:ycm_autoclose_preview_window_after_completion = 1
 let g:ycm_key_list_select_completion=[]
 let g:ycm_key_list_previous_completion=[]
 
-Plug 'marijnh/tern_for_vim'
 Plug 'mtth/scratch.vim'
 let g:scratch_autohide=1
 let g:scratch_insert_autohide=0
@@ -83,7 +95,8 @@ let g:javascript_plugin_jsdoc = 1
 Plug 'elzr/vim-json'
 let g:vim_json_syntax_conceal = 0
 
-Plug 'leafgarland/typescript-vim'
+"" TypeScript
+Plug 'HerringtonDarkholme/yats.vim'
 
 "" Elixir
 Plug 'elixir-editors/vim-elixir'
@@ -100,6 +113,25 @@ let g:gitgutter_map_keys=0
 
 Plug 'mhinz/vim-startify'
 Plug 'majutsushi/tagbar'
+let g:tagbar_autoclose = 1
+let g:tagbar_type_typescript = {
+  \ 'ctagsbin' : 'tstags',
+  \ 'ctagsargs' : '-f-',
+  \ 'kinds': [
+    \ 'e:enums:0:1',
+    \ 'f:function:0:1',
+    \ 't:typealias:0:1',
+    \ 'M:Module:0:1',
+    \ 'I:import:0:1',
+    \ 'i:interface:0:1',
+    \ 'C:class:0:1',
+    \ 'm:method:0:1',
+    \ 'p:property:0:1',
+    \ 'v:variable:0:1',
+    \ 'c:const:0:1',
+  \ ],
+  \ 'sort' : 0
+\ }
 Plug 'rakr/vim-one'
 Plug 'vim-airline/vim-airline'
 Plug 'ernstwi/vim-sticky'
