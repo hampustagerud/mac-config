@@ -317,3 +317,5 @@ function! ToggleNERDTree()
 		NERDTreeFind %
 	endif
 endfunction
+
+autocmd BufRead,BufNewFile *.h setlocal filetype=c
