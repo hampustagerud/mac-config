@@ -314,7 +314,11 @@ function! ToggleNERDTree()
 	if exists("g:NERDTree") && g:NERDTree.IsOpen()
 		NERDTreeClose
 	else
-		NERDTreeFind %
+		try
+			NERDTreeFind %
+		catch
+			NERDTree
+		endtry
 	endif
 endfunction
 
