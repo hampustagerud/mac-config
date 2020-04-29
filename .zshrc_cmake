@@ -53,10 +53,18 @@ function __project_parse_args
 function __project_do
 {
 	local cmds=(${@})
+	local result=0
 	for cmd in ${cmds[@]}; do
 		__project_status "${cmd}"
 		eval "${cmd}"
+
+		result=${?}
+		if [ "${result}" != "0" ]; then
+			return ${result}
+		fi
 	done
+
+	return 0
 }
 
 function __project_info
@@ -67,6 +75,8 @@ function __project_info
 		echo "run: ${__ARG_RUN}"
 		echo "arguments: ${@}"
 	fi
+
+	return 0
 }
 
 function __project_clean
@@ -74,8 +84,10 @@ function __project_clean
 	if [ -n ${__ARG_CLEAN} ] && [[ ${__ARG_CLEAN} -eq 1 ]]; then
 		if [ -d build ]; then
 			__project_do "rm -r build"
+			return ${?:-0}
 		else
 			__project_error "Nothing to clean?"
+			return 1
 		fi
 	fi
 }
@@ -89,6 +101,8 @@ function __project_build
 			"cmake .. -G Ninja"	\
 			"ninja"			\
 			"cd .."
+
+		return ${?:-0}
 	fi
 }
 
@@ -97,8 +111,10 @@ function __project_run
 	if [ -n ${__ARG_RUN} ] && [[ ${__ARG_RUN} -eq 1 ]]; then
 		if [ -f build/dist/bin/lc ]; then
 			__project_do "./build/dist/bin/lc ${@}"
+			return ${?}
 		else
 			__project_error "The project has not been built?"
+			return 1
 		fi
 	fi
 }
@@ -112,15 +128,21 @@ function project
 		local args="${@:${__ARG_INDEX}}"
 
 		__project_info "${args}"
-		__project_clean "${args}"
-		__project_build "${args}"
-		__project_run "${args}"
+		[ ${?} -eq 0 ] && __project_clean "${args}"
+		[ ${?} -eq 0 ] && __project_build "${args}"
+		[ ${?} -eq 0 ] && __project_run "${args}"
+
+		local success=${?}
 
 		local end=$(python3 -c ${command})
 		local total=$((end - start))
 		local result=$(printf "%.3f" ${total})
 
-		__project_status "Finished in ${result}s 🎉"
+		if [ ${success} -ne 0 ]; then
+			__project_error "Finished with errors in ${result}s 🙁"
+		else
+			__project_status "Finished in ${result}s 🎉"
+		fi
 	else
 		__project_status "Exited"
 	fi
