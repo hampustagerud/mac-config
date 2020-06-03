@@ -69,28 +69,15 @@ let g:NERDTreeQuitOnOpen=1
 let g:NERDTreeWinPos="right"
 
 " Language support
+"" General
+Plug 'sheerun/vim-polyglot'
+
 "" TeX
 Plug 'lervag/vimtex'
 let g:vimtex_view_method='skim'
 let g:vimtex_quickfix_open_on_warning=0
 
-"" JavaScript
-Plug 'mxw/vim-jsx'
-let g:jsx_ext_required = 0
-
-Plug 'pangloss/vim-javascript'
-let g:javascript_plugin_flow = 1
-let g:javascript_plugin_jsdoc = 1
-
-"" JSON
-Plug 'elzr/vim-json'
-let g:vim_json_syntax_conceal = 0
-
-"" TypeScript
-Plug 'HerringtonDarkholme/yats.vim'
-
 "" Elixir
-Plug 'elixir-editors/vim-elixir'
 Plug 'slashmili/alchemist.vim'
 let g:alchemist_mappings_disable = 1
 
