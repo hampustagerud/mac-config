@@ -36,13 +36,13 @@ let g:ale_fixers = {
 \  'javascript': ['prettier'],
 \  'typescript': ['prettier'],
 \  'typescriptreact': ['prettier'],
-\  'scss': ['prettier'],
+\  'scss': ['prettier']
 \}
 let g:ale_linters = {
 \  'javascript': ['eslint'],
 \  'typescript': ['eslint', 'tsserver'],
 \  'typescriptreact': ['eslint', 'tsserver'],
-\  'scss': ['stylelint']
+\  'scss': ['stylelint', 'prettier']
 \}
 
 Plug 'Valloric/YouCompleteMe'
@@ -52,10 +52,6 @@ let g:ycm_key_list_previous_completion=[]
 let g:ycm_min_num_of_chars_for_completion = 4
 let g:ycm_extra_conf_globlist = ['~/Developer/*','!~/*']
 let g:ycm_disable_for_files_larger_than_kb = 4096
-
-" Plug 'mtth/scratch.vim'
-let g:scratch_autohide=1
-let g:scratch_insert_autohide=0
 
 Plug 'editorconfig/editorconfig-vim'
 Plug 'easymotion/vim-easymotion'
@@ -70,6 +66,7 @@ Plug 'ctrlpvim/ctrlp.vim'
 Plug 'scrooloose/nerdtree'
 let g:NERDTreeWinSize=60
 let g:NERDTreeQuitOnOpen=1
+let g:NERDTreeWinPos="right"
 
 " Language support
 "" TeX
