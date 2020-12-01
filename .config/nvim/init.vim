@@ -1,301 +1,270 @@
-"" Auto install vim-plug
-if empty(glob("$VIM/autoload/plug.vim"))
-	silent !curl -sfLo $VIM/autoload/plug.vim --create-dirs
+" =========================
+" vim-plug
+" =========================
+
+if empty(glob('~/.vim/autoload/plug.vim'))
+	silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
 		\ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-	autocmd VimEnter * PlugInstall
+	autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
-"" Plugins
+
+" =========================
+" Plugins
+" =========================
+
 call plug#begin()
 
+" -------------------------
 " Editing
-Plug 'matze/vim-move'
-let g:move_map_keys = 0
+" -------------------------
 
-Plug 'SirVer/ultisnips'
-let g:UltiSnipsSnippetDirectories=['ultisnips']
-let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsJumpForwardTrigger="<tab>"
-let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
+Plug 'Shougo/neosnippet.vim'
+Plug 'cohama/lexima.vim'
+Plug 'matze/vim-move', { 'on': ['<plug>MoveBlockDown', '<plug>MoveBlockUp'] }
+Plug 'preservim/nerdcommenter'
+Plug 'reedes/vim-pencil'
+Plug 'tpope/vim-surround'
 
-Plug 'scrooloose/nerdcommenter'
-let g:NERDSpaceDelims = 1
-let g:NERDCustomDelimiters = { 'js': { 'left': '/* ','right': ' */' } }
+" -------------------------
+" Languages
+" -------------------------
 
-Plug 'w0rp/ale'
-let g:ale_linters_explicit = 1
-let g:ale_sign_column_always = 1
-let g:ale_completion_enabled = 1
-let g:ale_completion_tsserver_autoimport = 1
-let g:ale_completion_enabled = 0
-let g:ale_fix_on_save = 1
-let g:ale_lint_on_text_changed = 'always'
-let g:ale_lint_on_enter = 1
-let g:ale_lint_delay = 300
-let g:ale_fixers = {
-\  'javascript': ['prettier'],
-\  'typescript': ['prettier'],
-\  'typescriptreact': ['prettier'],
-\  'scss': ['prettier']
+Plug 'lervag/vimtex', { 'for': ['latex', 'tex'] }
+Plug 'sheerun/vim-polyglot'
+Plug 'slashmili/alchemist.vim', { 'for': ['elixir'] }
+Plug 'amiralies/vim-rescript'
+
+" -------------------------
+" LSP
+" -------------------------
+
+Plug 'dense-analysis/ale'
+Plug 'neovim/nvim-lspconfig'
+Plug 'nvim-lua/completion-nvim'
+Plug 'nvim-treesitter/nvim-treesitter'
+
+" -------------------------
+" UI
+" -------------------------
+
+Plug 'itchyny/lightline.vim'
+Plug 'mihaifm/bufstop'
+Plug 'nvim-lua/popup.nvim'
+Plug 'nvim-lua/telescope.nvim'
+Plug 'preservim/nerdtree', {
+\	'on': ['NERDTree', 'NERDTreeClose', 'NERDTreeFind'],
 \}
-let g:ale_linters = {
-\  'javascript': ['eslint'],
-\  'typescript': ['eslint', 'tsserver'],
-\  'typescriptreact': ['eslint', 'tsserver'],
-\  'scss': ['stylelint', 'prettier']
-\}
+Plug 'rakr/vim-one'
+Plug 'ryanoasis/vim-devicons'
+Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 
-Plug 'Valloric/YouCompleteMe'
-let g:ycm_autoclose_preview_window_after_completion = 1
-let g:ycm_key_list_select_completion=[]
-let g:ycm_key_list_previous_completion=[]
-let g:ycm_min_num_of_chars_for_completion = 4
-let g:ycm_extra_conf_globlist = ['~/Developer/*','!~/*']
-let g:ycm_disable_for_files_larger_than_kb = 4096
+" -------------------------
+" Utilities
+" -------------------------
 
 Plug 'editorconfig/editorconfig-vim'
-Plug 'easymotion/vim-easymotion'
-let g:EasyMotion_smartcase = 1
-let g:EasyMotion_do_mapping = 0
-
-Plug 'cohama/lexima.vim'
-
-" File navigation
+Plug 'nvim-lua/plenary.nvim'
+Plug 'mhinz/vim-grepper', { 'on': ['Grepper', '<plug>(GrepperOperator)'] }
 Plug 'qpkorr/vim-bufkill'
-Plug 'ctrlpvim/ctrlp.vim'
-Plug 'scrooloose/nerdtree'
-let g:NERDTreeWinSize=60
-let g:NERDTreeQuitOnOpen=1
-let g:NERDTreeWinPos="right"
-
-" Language support
-"" General
-Plug 'sheerun/vim-polyglot'
-
-"" TeX
-Plug 'lervag/vimtex'
-let g:vimtex_view_method='skim'
-let g:vimtex_quickfix_open_on_warning=0
-
-"" Elixir
-Plug 'slashmili/alchemist.vim'
-let g:alchemist_mappings_disable = 1
-
-" UI
-Plug 'junegunn/vim-peekaboo'
-Plug 'airblade/vim-gitgutter'
-let g:gitgutter_map_keys=0
-Plug 'APZelos/blamer.nvim'
-let g:blamer_enabled = 1
-let g:blamer_delay = 700
-let g:blamer_quiet = 1
-let g:blamer_show_in_visual_modes = 0
-
-Plug 'majutsushi/tagbar'
-let g:tagbar_autoclose = 1
-let g:tagbar_type_typescript = {
-  \ 'ctagsbin' : 'tstags',
-  \ 'ctagsargs' : '-f-',
-  \ 'kinds': [
-    \ 'e:enums:0:1',
-    \ 'f:function:0:1',
-    \ 't:typealias:0:1',
-    \ 'M:Module:0:1',
-    \ 'I:import:0:1',
-    \ 'i:interface:0:1',
-    \ 'C:class:0:1',
-    \ 'm:method:0:1',
-    \ 'p:property:0:1',
-    \ 'v:variable:0:1',
-    \ 'c:const:0:1',
-  \ ],
-  \ 'sort' : 0
-\ }
-Plug 'rakr/vim-one'
-Plug 'vim-airline/vim-airline'
-
-Plug 'ryanoasis/vim-devicons'
-let g:DevIconsEnableFoldersOpenClose = 1
-let g:WebDevIconsUnicodeDecorateFolderNodes = 1
-let g:webdevicons_enable_nerdtree = 1
-" Folder icon fix
-highlight! link NERDTreeFlags NERDTreeDir
+Plug 'zivyangll/git-blame.vim', { 'on': ['GitBlame'] }
 
 call plug#end()
 
-"" Settings
-" Airline
-let g:lightline = {'colorscheme': 'one'}
 
-let g:airline_section_a = airline#section#create(['mode'])
-let g:airline_left_sep = ''
-let g:airline_left_alt_sep = ''
-let g:airline_right_sep = ''
-let g:airline_right_alt_sep = ''
-let g:airline_powerline_fonts = 1
+" =========================
+" vim settings
+" =========================
 
-" Colors
-if (empty($TMUX))
-	if (has("nvim"))
-		let $NVIM_TUI_ENABLE_TRUE_COLOR=1
-	endif
-	if (has("termguicolors"))
-		set termguicolors
-	endif
-endif
-
-set background=dark
-colorscheme one
+filetype plugin on
 
 " Leader setting
 let g:mapleader=','
+
 " Color vertical line at 80 chars
 set colorcolumn=80
+
 " Enable using the mouse to select position
 set mouse=a
+
 " Show line numbers
 set number
+
 " Match brackets etc
 set showmatch
 
+" No need to show the mode, shown in the status line
+set noshowmode
+
+" Preview substitutes
+set inccommand=nosplit
+
+" Store viminfo
+set viminfo^=%
+
 " Break lines
 set linebreak
-set showbreak=+++
+set showbreak=>>>
+set wrap
 
 " Indentation
 set cindent
 set smarttab
 set shiftwidth=8
 
-" Spelling
-set spelllang=en_gb
-
 " Allow project specific .nvimrc
 set exrc
 set secure
 
-filetype plugin on
-
-"" Keyboard shortcuts
-" Insert new lines
-nmap <CR> o
-nmap <leader><CR> $a,<CR>
-
-" Clean whitespace
-nmap <leader>cw :%s/\s\+$//e<cr>``
-
-" Move faster
-nmap J 5j
-nmap K 5k
-vmap J 5j
-vmap K 5k
-
-nmap M <Plug>(easymotion-overwin-f)
-
-" Move cursor to previous position
-nmap B ``
-
-" Line movement
-nmap _ ^
-nmap - $
-
-" Save
-nmap s :w<CR>
-nmap S :SSave<CR>
-
-" Redo
-nmap U <C-R>
-
-" Remove highlighting
-nmap <leader>n :noh<CR>
-
-"Move visually selected block
-vmap <C-h> <Plug>MoveBlockLeft
-vmap <C-j> <Plug>MoveBlockDown
-vmap <C-k> <Plug>MoveBlockUp
-vmap <C-l> <Plug>MoveBlockRight
-vmap <space>h 5<Plug>MoveBlockLeft
-vmap <space>j 5<Plug>MoveBlockDown
-vmap <space>k 5<Plug>MoveBlockUp
-vmap <space>l 5<Plug>MoveBlockRight
-
-" Sort visually selected lines
-vmap s :sort<CR>
-
-" Copy visual selection to system clipboard
-vmap sy "*y
-
-" Reload init.vim
-nmap <C-l> :source $MYVIMRC<CR>
-
-" Plugin keys
-nmap <space> :CtrlPBuffer<CR>
-nmap t :TagbarToggle<CR>
-nmap <leader><space> :call ToggleNERDTree()<CR>
-
 " Splits
 set splitbelow
 set splitright
-nmap <leader>sh :vs<CR>
-nmap <leader>sv :split<CR>
-nmap <UP> <C-W>k
-nmap <DOWN> <C-W>j
-nmap <LEFT> <C-W>h
-nmap <RIGHT> <C-W>l
 
-nmap <S-UP> :resize -5<CR>
-nmap <S-DOWN> :resize +5<CR>
-nmap <S-LEFT> :vertical resize -5<CR>
-nmap <S-RIGHT> :vertical resize +5<CR>
-
-" Map scratch
-nmap <BS> :Scratch<CR>
-
-" Unmap ex mode
-:nnoremap Q <Nop>
-
-" Close buffer
-nmap QQ :BD<CR>
-tmap QQ :bd!<CR>
+" Completion
+set completeopt=menuone,noinsert,noselect
+set shortmess+=c
 
 
-" YouCompleteMe / ALE
-nmap <leader>d :YcmShowDetailedDiagnostic<CR>
-nmap D :ALEDetail<CR>
-nmap <leader>F :YcmCompleter FixIt<CR>
-nmap <leader>f :ALEFix<CR>
+" -------------------------
+" Colorscheme
+" -------------------------
 
-nmap ° :YcmCompleter GetType<CR>
-nmap § :YcmCompleter GoToDeclaration<CR>
+if (has("nvim"))
+	let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+endif
 
-" Remap ESC in input mode
-imap jj <C-c>
+if (has('termguicolors'))
+	set termguicolors
+endif
 
-" Terminal
-tnoremap <Esc> <C-\><C-n>
+colorscheme one
+set background=dark
 
-" Command line
-cmap <A-BS> <C-W>
 
-"" Auto commands
-" Restore position in closed buffers
-autocmd BufReadPost *
-	\ if line("'\"") > 0 && line("'\"") <= line("$")	|
-	\   exe "normal! g`\""					|
-	\ endif
-set viminfo^=%
+" =========================
+" Plugin settings
+" =========================
 
-"" Functions
-function! ToggleColorMode()
-	if (&background == "light")
-		set background=dark
-	else
-		set background=light
-	endif
-endfunction
+let g:BufKillCreateMappings = 0
+let g:move_map_keys = 0
+let g:rustfmt_autosave = 1
+
+let g:alchemist_mappings_disable = 1
+
+" -------------------------
+" Lightline
+" -------------------------
+
+let g:lightline = {
+\	'colorscheme': 'one',
+\	'active': {
+\		'left': [
+\			['mode', 'paste'],
+\			['filename', 'readonly', 'modified'],
+\		],
+\	},
+\	'separator': { 'left': '', 'right': '' },
+\	'subseparator': { 'left': '', 'right': '' }
+\}
+
+" -------------------------
+" ALE
+" -------------------------
+
+let g:ale_completion_enabled = 0
+let g:ale_completion_tsserver_autoimport = 1
+let g:ale_fix_on_save = 1
+let g:ale_lint_delay = 300
+let g:ale_lint_on_enter = 1
+let g:ale_lint_on_text_changed = 'always'
+let g:ale_linters_explicit = 1
+let g:ale_sign_column_always = 1
+let g:ale_fixers = {
+\	'javascript': ['prettier'],
+\	'typescript': ['prettier'],
+\	'typescriptreact': ['prettier'],
+\	'scss': ['prettier'],
+\	'swift': ['swiftformat']
+\}
+let g:ale_linters = {
+\	'javascript': ['eslint'],
+\	'typescript': ['eslint'],
+\	'typescriptreact': ['eslint'],
+\	'scss': ['stylelint', 'prettier']
+\}
+
+" -------------------------
+" LSP + Diagnostics
+" -------------------------
+
+lua << EOF
+	lsp = require 'lspconfig'
+
+	local on_attach_vim = function()
+		require'completion'.on_attach()
+	end
+
+	lsp.clangd.setup { on_attach=on_attach_vim }
+	lsp.diagnosticls.setup { on_attach=on_attach_vim }
+	lsp.elixirls.setup { on_attach=on_attach_vim }
+	lsp.rust_analyzer.setup { on_attach=on_attach_vim }
+	lsp.solargraph.setup { on_attach=on_attach_vim }
+	lsp.tsserver.setup { on_attach=on_attach_vim }
+	lsp.vimls.setup { on_attach=on_attach_vim }
+EOF
+
+
+let g:completion_enable_snippet = 'Neosnippet'
+let g:diagnostic_enable_underline = 1
+let g:diagnostic_enable_virtual_text = 1
+let g:diagnostic_auto_popup_while_jump = 1
+
+" -------------------------
+" NERDCommenter
+" -------------------------
+
+let g:NERDSpaceDelims = 1
+let g:NERDCreateDefaultMappings = 0
+let g:NERDCustomDelimiters = {
+\	'js': { 'left': '/* ','right': ' */' }
+\}
+
+" -------------------------
+" NERDTree
+" -------------------------
+
+let g:DevIconsEnableFoldersOpenClose = 1
+let g:NERDTreeDirArrowCollapsible = ''
+let g:NERDTreeDirArrowExpandable = ''
+let g:NERDTreeQuitOnOpen=1
+let g:NERDTreeWinPos='right'
+let g:NERDTreeWinSize=40
+let g:WebDevIconsUnicodeDecorateFolderNodes = 1
+let g:webdevicons_enable_nerdtree = 1
+
+" -------------------------
+" Snippets
+" -------------------------
+
+let g:neosnippet#disable_runtime_snippets = { '_': 1 }
+let s:config_path = fnamemodify(expand($MYVIMRC), ':p:h')
+let g:neosnippet#snippets_directory = s:config_path.'/my-snippets'
+
+" -------------------------
+" vimtex
+" -------------------------
+
+let g:tex_flavor = 'latex'
+let g:vimtex_view_method='skim'
+let g:vimtex_quickfix_open_on_warning=0
+
+
+" =========================
+" Functions
+" =========================
 
 function! ToggleNERDTree()
-	if exists("g:NERDTree") && g:NERDTree.IsOpen()
+	if exists('g:NERDTree') && g:NERDTree.IsOpen()
 		NERDTreeClose
 	else
 		try
@@ -306,4 +275,162 @@ function! ToggleNERDTree()
 	endif
 endfunction
 
+
+" =========================
+" Key mappings
+" =========================
+
+" Save
+nmap s :w<cr>
+" Redo
+nmap U <C-R>
+
+" Remove highlighting
+nmap <leader>n :noh<cr>
+
+" Sort visually selected lines
+vmap s :sort<cr>
+
+" Copy visual selection to system clipboard
+vmap sy "*y
+
+" Reload init.vim
+nmap <C-l> :source $MYVIMRC<cr>
+
+" Unmap ex mode
+nnoremap Q <Nop>
+
+" Close buffer
+nmap QQ :BD<cr>
+tmap QQ :bd!<cr>
+
+" Toggle soft wrap
+nmap W :set wrap!<cr>
+
+" Close all buffers but the current
+command! CloseOthers execute '%bdelete|edit #'
+nmap <leader>co :CloseOthers<cr>
+
+" Alt+Backspace deletes an entire word
+cmap <A-BS> <C-W>
+
+" -------------------------
+" Movement
+" -------------------------
+
+" Move faster
+nmap J 5j
+nmap K 5k
+vmap J 5j
+vmap K 5k
+
+" Move visually selected block
+vmap <c-j> <plug>MoveBlockDown
+vmap <c-k> <plug>MoveBlockUp
+
+" -------------------------
+" Panes
+" -------------------------
+
+" Split current pane
+nmap <leader>sv :vs<cr>
+nmap <leader>sh :split<cr>
+
+" Move between panes
+nmap <up> <c-w>k
+nmap <down> <c-w>j
+nmap <left> <c-w>h
+nmap <right> <c-w>l
+
+" Resize panes
+nmap <s-up> :resize -5<cr>
+nmap <s-down> :resize +5<cr>
+nmap <s-left> :vertical resize -5<cr>
+nmap <s-right> :vertical resize +5<cr>
+
+" -------------------------
+" Plugins
+" -------------------------
+
+" Diagnostics
+nmap <leader>dd :OpenDiagnostic<cr>
+nmap <leader>dn :NextDiagnosticCycle<cr>
+nmap <leader>dp :PrevDiagnosticCycle<cr>
+
+" Telescope
+nmap <silent> <leader>l	:Lines<cr>
+nmap <silent> <leader>f <cmd>lua require('telescope.builtin').find_files()<cr>
+
+nmap <silent> <space> <cmd>BufstopFast<cr>
+
+" git blame on current line
+nmap <leader>b :GitBlame<cr>
+
+" Grep search
+nmap gs <plug>(GrepperOperator)
+
+" LSP
+nmap <silent> R <cmd>lua vim.lsp.buf.rename()<cr>
+nmap <silent> gd <cmd>lua vim.lsp.buf.definition()<cr>
+nmap <silent> td <cmd>lua vim.lsp.buf.type_definition()<cr>
+nmap <silent> H <cmd>lua vim.lsp.buf.hover()<cr>
+nmap <silent> E <cmd>lua vim.lsp.diagnostic.set_loclist()<cr>
+nmap <silent> <leader>a <cmd>lua vim.lsp.buf.code_action()<cr>
+
+" Snippets
+imap <expr><tab> neosnippet#expandable_or_jumpable()
+\	? "\<plug>(neosnippet_expand_or_jump)"
+\	: "\<tab>"
+
+" Toggle comment for line/selection
+nmap <leader>c<space> <plug>NERDCommenterToggle
+vmap <leader>c<space> <plug>NERDCommenterToggle
+
+" Toggle file explorer
+nmap <silent> <leader><space> :call ToggleNERDTree()<cr>
+
+
+" =========================
+" Highlightning
+" =========================
+
+" -------------------------
+" Diagnostics
+" -------------------------
+
+hi! link LspDiagnosticsError ALEErrorSign
+hi! link LspDiagnosticsHint Comment
+hi! link LspDiagnosticsInformation Comment
+hi! link LspDiagnosticsWarning ALEWarningSign
+
+call sign_define(
+\	"LspDiagnosticsErrorSign",
+\	{"text" : "", "texthl" : "ALEErrorSign"}
+\)
+call sign_define(
+\	"LspDiagnosticsHintSign",
+\	{"text" : "ﯧ", "texthl" : "ALEWarningSign"}
+\)
+call sign_define(
+\	"LspDiagnosticsInformationSign",
+\	{"text" : "כֿ", "texthl" : "ALEWarningSign"}
+\)
+call sign_define(
+\	"LspDiagnosticsWarningSign",
+\	{"text" : "", "texthl" : "ALEWarningSign"}
+\)
+
+
+" =========================
+" Auto commands
+" =========================
+
+" Restore position in closed buffers
+autocmd BufReadPost * silent! normal! g`"zv
+
+" Read all header files as C headers, not C++
 autocmd BufRead,BufNewFile *.h setlocal filetype=c
+
+autocmd FileType c,cpp unmap <s-tab>
+autocmd FileType c,cpp nmap <s-tab> :ClangdSwitchSourceHeader<cr>
+autocmd FileType cmake,dosini setlocal nolinebreak nowrap
