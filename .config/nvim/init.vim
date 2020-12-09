@@ -56,7 +56,8 @@ Plug 'preservim/nerdtree', {
 \	'on': ['NERDTree', 'NERDTreeClose', 'NERDTreeFind'],
 \}
 Plug 'rakr/vim-one'
-Plug 'ryanoasis/vim-devicons'
+Plug 'romgrk/barbar.nvim'
+Plug 'kyazdani42/nvim-web-devicons'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 
 " -------------------------
@@ -64,6 +65,7 @@ Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 " -------------------------
 
 Plug 'editorconfig/editorconfig-vim'
+Plug 'embear/vim-localvimrc'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'mhinz/vim-grepper', { 'on': ['Grepper', '<plug>(GrepperOperator)'] }
 Plug 'qpkorr/vim-bufkill'
@@ -151,6 +153,11 @@ let g:rustfmt_autosave = 1
 
 let g:alchemist_mappings_disable = 1
 
+let g:localvimrc_ask = 0
+let g:localvimrc_autocmd = 0
+let g:localvimrc_python2_enable = 0
+let g:localvimrc_sandbox = 0
+
 " -------------------------
 " Lightline
 " -------------------------
@@ -192,6 +199,16 @@ let g:ale_linters = {
 \	'typescriptreact': ['eslint'],
 \	'scss': ['stylelint', 'prettier']
 \}
+
+" -------------------------
+" Barbar
+" -------------------------
+
+let bufferline = get(g:, 'bufferline', {})
+
+let bufferline.animation = v:false
+let bufferline.closable = v:true
+let bufferline.clickable = v:true
 
 " -------------------------
 " LSP + Diagnostics
@@ -301,7 +318,7 @@ nmap <C-l> :source $MYVIMRC<cr>
 nnoremap Q <Nop>
 
 " Close buffer
-nmap QQ :BD<cr>
+nmap QQ :BufferClose<cr>
 tmap QQ :bd!<cr>
 
 " Toggle soft wrap
@@ -310,6 +327,9 @@ nmap W :set wrap!<cr>
 " Close all buffers but the current
 command! CloseOthers execute '%bdelete|edit #'
 nmap <leader>co :CloseOthers<cr>
+
+" Barbar
+nmap <silent> < :BufferPick<cr>
 
 " Alt+Backspace deletes an entire word
 cmap <A-BS> <C-W>
@@ -358,7 +378,6 @@ nmap <leader>dn :NextDiagnosticCycle<cr>
 nmap <leader>dp :PrevDiagnosticCycle<cr>
 
 " Telescope
-nmap <silent> <leader>l	:Lines<cr>
 nmap <silent> <leader>f <cmd>lua require('telescope.builtin').find_files()<cr>
 
 nmap <silent> <space> <cmd>BufstopFast<cr>
